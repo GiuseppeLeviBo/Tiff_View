@@ -1,0 +1,105 @@
+# TIFF Viewer
+
+Un visualizzatore desktop semplice per immagini TIFF scientifiche su Linux. È pensato
+anche per TIFF in virgola mobile (`float32`/`float64`), come il campione 2448×2048
+fornito con il progetto.
+
+## Funzioni
+
+- apertura di file `.tif` e `.tiff`;
+- contrasto automatico robusto (percentili 1–99), regolabile in tempo reale;
+- istogramma logaritmico e lettura dell'intensità grezza sotto il cursore;
+- statistiche scientifiche e visualizzazione dei metadati TIFF;
+- calibrazione manuale con vetrino graduato, profili per ingrandimento e misure in µm;
+- inversione chiaro/scuro;
+- zoom con la rotella, trascinamento e adattamento alla finestra;
+- TIFF multipagina;
+- immagini in scala di grigi, RGB e RGBA con varie profondità;
+- esportazione della visualizzazione corrente in PNG;
+- caricamento di una sola pagina alla volta, per limitare l'uso di memoria.
+
+Il programma non modifica mai il TIFF originale.
+
+La trasformazione di contrasto riguarda esclusivamente la visualizzazione a 8 bit sul
+monitor. Coordinate, intensità, statistiche e metadati sono letti dai dati originali.
+Le distanze fisiche (per esempio in µm) richiedono che il TIFF contenga una calibrazione
+spaziale; in sua assenza vengono mostrate coordinate in pixel.
+
+## Calibrazione per ingrandimento
+
+1. Apri l'immagine del vetrino graduato acquisita con l'ingrandimento desiderato.
+2. Premi **Calibra…** e trascina una linea esattamente tra due tacche note.
+3. Inserisci la distanza reale in µm e assegna un nome, per esempio `10×` o `40×`.
+4. Sulle immagini successive seleziona quel profilo e premi **Misura**.
+
+I profili vengono conservati in `~/.config/tiff-viewer/calibrations.json`. È opportuno
+creare profili distinti anche quando cambiano risoluzione della camera, binning o altri
+parametri ottici che modificano la scala effettiva.
+
+## Installazione su Windows
+
+1. Installa [Python 3 per Windows](https://www.python.org/downloads/windows/) se non è
+   già presente. Durante l'installazione è consigliabile selezionare **Add Python to PATH**.
+2. Estrai l'intera cartella del progetto in una posizione permanente.
+3. Fai doppio clic su **`install-windows.bat`**.
+
+L'installazione avviene solo per l'utente corrente e non richiede privilegi di
+amministratore. Crea:
+
+- un ambiente Python isolato nella cartella `.venv-windows`;
+- un collegamento sul Desktop e uno nel menu Start;
+- la voce **Apri con TIFF Viewer** nel menu contestuale dei file `.tif` e `.tiff`.
+
+Il programma non sostituisce l'applicazione predefinita associata ai TIFF. In alternativa
+può essere avviato con `run-windows.bat`. Per rimuovere ambiente, collegamenti e voce del
+menu contestuale, fai doppio clic su `uninstall-windows.bat`.
+
+> Windows potrebbe mostrare l'avviso SmartScreen per gli script scaricati da Internet.
+> Se la cartella proviene da una fonte fidata, scegli **Ulteriori informazioni → Esegui
+> comunque**. Gli script sono testuali e possono essere ispezionati prima dell'avvio.
+
+## Installazione su Linux
+
+Servono Python 3.10 o successivo e Tkinter. Su Ubuntu/Debian:
+
+```bash
+sudo apt install python3 python3-venv python3-tk
+chmod +x install.sh run.sh
+./install.sh
+```
+
+Lo script crea un ambiente virtuale isolato, installa le dipendenze e aggiunge
+**TIFF Viewer** al menu applicazioni. Non richiede privilegi di amministratore,
+tranne l'eventuale installazione iniziale di Tkinter tramite il gestore pacchetti.
+
+Per avviarlo dalla cartella del progetto:
+
+```bash
+./run.sh
+./run.sh /percorso/immagine.tif
+```
+
+È possibile anche trascinare un file sull'icona dell'applicazione o usare il menu
+**File → Apri**.
+
+## Comandi principali
+
+| Azione | Comando |
+|---|---|
+| Apri TIFF | `Ctrl+O` |
+| Esporta PNG | `Ctrl+S` |
+| Adatta alla finestra | `F` |
+| Dimensione reale | `1` |
+| Zoom | rotella del mouse |
+| Spostamento | trascinamento con il tasto sinistro |
+
+## Avvio per sviluppo
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+python -m tiff_viewer
+python -m unittest discover -s tests -v
+```
+
