@@ -1,6 +1,6 @@
 # TIFF Viewer
 
-Un visualizzatore desktop semplice per immagini TIFF scientifiche su Linux. È pensato
+Un visualizzatore desktop semplice per immagini TIFF scientifiche su Linux e Windows. È pensato
 anche per TIFF in virgola mobile (`float32`/`float64`), come il campione 2448×2048
 fornito con il progetto.
 
