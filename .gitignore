@@ -1,0 +1,19 @@
+# Python bytecode and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Generated packaging output
+/build/
+/dist/
+*.egg-info/
+.eggs/
+
+# Local environments (including the Linux and Windows installers)
+.venv/
+.venv-*/
+venv/
+.tox/
+.nox/

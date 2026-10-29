@@ -1,2 +1,0 @@
-[gui_scripts]
-tiff-viewer = tiff_viewer.app:main

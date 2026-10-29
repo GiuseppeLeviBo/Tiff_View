@@ -103,3 +103,19 @@ python -m tiff_viewer
 python -m unittest discover -s tests -v
 ```
 
+## Costruzione del pacchetto
+
+`tiff_viewer/` è l'unica sorgente dei moduli Python. `build/`, `dist/`,
+`*.egg-info/` e `__pycache__/` sono artefatti generati e non vanno versionati
+né modificati manualmente. Per una distribuzione usa una copia pulita del
+repository, senza riutilizzare una directory `build/` di precedenti build:
+
+```bash
+python -m pip install build
+python -m build
+```
+
+La build crea una distribuzione sorgente e un wheel in `dist/`. Le istruzioni
+per verificarne installazione e contenuto, e i limiti delle verifiche eseguite,
+sono in [docs/packaging-validation.md](docs/packaging-validation.md).
+

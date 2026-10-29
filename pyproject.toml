@@ -18,5 +18,7 @@ dependencies = [
 tiff-viewer = "tiff_viewer.app:main"
 
 [tool.setuptools.packages.find]
-include = ["tiff_viewer*"]
+where = ["."]
+include = ["tiff_viewer", "tiff_viewer.*"]
+namespaces = false
 
