@@ -38,17 +38,24 @@ def contrast_limits(
     high_percentile: float = 99.0,
     max_samples: int = 1_000_000,
 ) -> tuple[float, float]:
-    """Calculate robust display limits from a bounded, evenly-spaced sample."""
+    """Calculate display limits from at most max_samples evenly spaced values.
+
+    Sampling spans the flattened array, including both ends when max_samples
+    is at least two. Non-finite values are discarded after sampling; the
+    original data are never modified.
+    """
     if not 0.0 <= low_percentile < high_percentile <= 100.0:
         raise ValueError("Percentili di contrasto non validi")
+    if max_samples < 1:
+        raise ValueError("Il numero massimo di campioni deve essere positivo")
 
     values = np.asarray(array)
     if values.ndim == 3 and values.shape[-1] in (3, 4):
         values = values[..., :3]
     values = values.reshape(-1)
     if values.size > max_samples:
-        step = max(1, values.size // max_samples)
-        values = values[::step][:max_samples]
+        indices = np.linspace(0, values.size - 1, max_samples, dtype=np.intp)
+        values = values[indices]
     values = values[np.isfinite(values)]
     if values.size == 0:
         return 0.0, 1.0
